@@ -41,7 +41,7 @@
  *****************************************************************************/
 #include "SST25VF016.h"
 
-#if defined (GFX_PICTAIL_V3) || defined (PIC24FJ256DA210_DEV_BOARD) || defined (MULTI_MEDIA_BOARD_DM00123)
+#if defined (GFX_EXPLORER16) || defined (PIC24FJ256DA210_DEV_BOARD) || defined (MULTI_MEDIA_BOARD_DM00123)
 
 /************************************************************************
 * Function: SST25Init                                                  
@@ -85,7 +85,7 @@ void SST25Init(void)
     SST25_SPIBRG = 1;
     SST25_SPICONbits.ON = 1;
     #else
-        #if defined (GFX_PICTAIL_V3)
+        #if defined (GFX_EXPLORER16)
     SST25_SPISTAT = 0;
     SST25_SPICON1 = 0x001b;
     SST25_SPICON1bits.MSTEN = 1;
@@ -117,7 +117,7 @@ void SST25Init(void)
         #endif
 	#endif
     // Set IOs directions for SST25 SPI
-    #if defined (GFX_PICTAIL_V3) || defined (MULTI_MEDIA_BOARD_DM00123)
+    #if defined (GFX_EXPLORER16) || defined (MULTI_MEDIA_BOARD_DM00123)
     
     SST25_CS_LAT = 1;
     SST25_CS_TRIS = 0;

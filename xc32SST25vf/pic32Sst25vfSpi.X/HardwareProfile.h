@@ -35,7 +35,7 @@ extern "C" {
 
 #define SST25_CS_TRIS TRISDbits.TRISD1
     
-#define GFX_PICTAIL_V3
+#define GFX_EXPLORER16
 
 #define SST25_SPI_CHANNEL 2
     
