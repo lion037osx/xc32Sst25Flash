@@ -13,8 +13,19 @@ extern "C" {
 #endif
 
 #include "system.h"
+/*************************      CONFIG  ALL    ***********************************/
     
-//Config spi for SST25FV016    
+#define __WRITE_LOGO__    
+    
+#define CANT_DATA_READ     32
+//#if defined(__WRITE_LOGO__    )    
+#define SIZE_LOGO ((480*272*2)+18)    //260087    
+//#endif
+
+
+
+    
+/************************   Config spi for SST25FV016    ****************************/
     
 #define SPI_CHANNEL_2_ENABLE   
     
@@ -30,39 +41,33 @@ extern "C" {
     
 #define SST25_CS_LAT    LATDbits.LATD1
     
-    #if defined (USE_SST25VF016)
+#if defined (USE_SST25VF016)
     #define FLASHInit(initData)             SST25Init(initData);
 	#define ChipErase()                     SST25ChipErase();
 	#define WriteArray(address, pdata, len) SST25WriteArray(address, pdata, len)
     #define ReadArray(address, pdata, len)  SST25ReadArray(address, pdata, len)
-#endif	
+#endif	    
     
-    
-    #if defined (USE_SST25VF016) 
-//    #define FLASHInit()                     SST25Init();
-#endif
 #define INPUT 1
 #define OUTPUT 0    
-    
+#define PUSH 0   
 #define BUTTON_TRIS TRISBbits.TRISB4
-#define BUTTON_STAT PORTBbits.RB4
-    
-#define PUSH 0
-    
-#define SIZE_LOGO ((480*272*2)+18)    //260087
-//#define GetPeripheralClock() 80000000ul
+#define BUTTON_STAT PORTBbits.RB4    
 
+/***************************
+ configs pins
+ sst25 CE-pin1 to RD1 -CS
+ sst25 SDO-pin2 to RG7 -SDI
+ sst25 SDI-pin5 to RG8 -SDO
+ sst25 SCK-pin6 to RG6 -SCK
+ ***************************/
+    
 #define BAUDRATE2       115200UL
 #define BRG_DIV2        8 
 #define BRGH2           0 
     
 #define TX_TRIS		TRISFbits.TRISF5
 #define RX_TRIS 	TRISFbits.TRISF4
-
-    
-    
-    
-
 
 #ifdef	__cplusplus
 }

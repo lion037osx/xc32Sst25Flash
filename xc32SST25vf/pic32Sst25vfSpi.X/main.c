@@ -17,140 +17,64 @@
 #include "SST25VF016.h"
 #include "uart2.h"
 #include "Compiler.h"
-//#include "drv_spi.h"
 #include "HardwareProfile.h"
+#ifdef __WRITE_LOGO__
 #include "logo480.h"
-//#include "TimeDelay.h"
-/*
- typedef struct{
-    int    channel;
-	int	    baudRate;
-	int     dummy;
-	char    cke;
-	char    ckp;
-	char    smp;
-	char    mode;
-} DRV_SPI_INIT_DATA;
- */
+#endif
+
 int32_t main(void)
-{
-//const DRV_SPI_INIT_DATA SPI_Init_Data ={SST25_SPI_CHANNEL,16, 0, SPI_CKE_IDLE_ACT, SPI_CKP_ACT_LOW, SPI_SMP_PHASE_MID,SPI_MST_MODE_ENABLE};
-static int tmp;
-static char charTmp;
-static char strTmp[40];       
+{   
+static DWORD address=0x0000;
+static BYTE byteTmp;
+static DWORD byteReads=CANT_DATA_READ;  
+//static char cByte;
+static char strSST[64];
+static DWORD sizeLogo;
+static int flagWrite;
+
 DDPCONbits.JTAGEN = 0;
 SYSTEMConfigPerformance(GetSystemClock());
-/* Initialize I/O and Peripherals for application */
-//InitApp();
-//INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
-//BUTTON_TRIS=INPUT;
 
-TRISBbits.TRISB4=1;PORTSetPinsDigitalIn(IOPORT_B, BIT_4);
+TRISBbits.TRISB4=1;
+PORTSetPinsDigitalIn(IOPORT_B,BIT_4);
 
 UART2Init(); 
-//    SST25Init((DRV_SPI_INIT_DATA *)&SPI_Init_Data);
-
-UART2PrintString("\r\nConfig Spi sst25vf init");
-
-UART2PrintString("\r\n");    
+UART2PrintString("\r\nFirmware XC32 sst25vf\r\n");
+   
 SST25Init();
 
-    static DWORD address=0x0000;
-    static BYTE byteTmp;
-  
-    static char cByte;
-static   char strSST[64];
-    static DWORD sizeLogo;
-    static int flagWrite=0;
-    //sizeLogo=strlen(logo);
-    
-    //sizeLogo=0x3FC08;
-   // sizeLogo=0x996C9;
     sizeLogo=SIZE_LOGO;
-    sprintf(strSST,"size logo:%u,\r\n",sizeLogo);
-    
-  
-UART2PrintString("\r\n"); 
-UART2PrintString("init Write");
-UART2PrintString("\r\n");    
+    //sprintf(strSST,"size logo:%u,\r\n",sizeLogo);    
+    //UART2PrintString("init Write\r\n");
 
-cByte=0x20;
-flagWrite=0;
+    flagWrite=0;
 
 while(BUTTON_STAT==PUSH)flagWrite=1;
-
-if(flagWrite==1){
-    UART2PrintString("\r\n"); 
-UART2PrintString("init erase");
-UART2PrintString("\r\n");   
-//UART2PrintString(strSST);
-SST25ChipErase();
-
-UART2PrintString("\r\n"); 
-UART2PrintString("end erase");
-UART2PrintString("\r\n"); 
-}
-
-
+#ifdef __WRITE_LOGO__
+    if(flagWrite==1){
+        UART2PrintString("init erase\r\n");
+        SST25ChipErase();
+        UART2PrintString("end erase\r\n");
+    }
+UART2PrintString("init Write\r\n");    
     while(flagWrite&&sizeLogo--) 
     {
-        //if(cByte>=255)cByte=0x20;
-        // if(address>0xffff)address=0x0000;
         SST25WriteByte(logo[address],address);
-        //cByte++;
         address++;
     }
-//sizeLogo=strlen(logo);
-    //sizeLogo=0x3FC08;
-    //sizeLogo=0x996C9;
+UART2PrintString("end Write\r\n");
+#endif
+
 sizeLogo=SIZE_LOGO;
-UART2PrintString("\r\n"); 
-UART2PrintString("end Write");
-UART2PrintString("\r\n");    
-
-sprintf(strSST,"size logo:%u,\r\n",sizeLogo);
-UART2PrintString(strSST);
-
-   // while(sizeLogo--) 
 address=0x0000;
-int byteReads=32;
-for(byteReads=0;byteReads<64;byteReads++)
+
+    for(byteReads=0;byteReads<64;byteReads++)
     {
-       // if(address>0xffff)address=0x0000;
-        byteTmp=SST25ReadByte(address);
-        
+        byteTmp=SST25ReadByte(address);        
         sprintf(strSST,"0x%X,",byteTmp);
-        
-     // if(byteTmp!=0x00) UART2PutChar(byteTmp);
-       
-       UART2PrintString(strSST);
+        UART2PrintString(strSST);
         address++;
-       
     }
-
-UART2PrintString("\r\n"); 
-UART2PrintString("end Read");
-UART2PrintString("\r\n"); 
+    UART2PrintString("\r\nend Read\r\n");
 }
 
-/***************************
- 
- 
- configs pins
-
- sst25 CE-pin1 to RD1 -CS
- sst25 SDO-pin2 to RG7 -SDI
- sst25 SDI-pin5 to RG8 -SDO
- sst25 SCK-pin6 to RG6 -SCK
- 
-
- ******************************/
-
-
-
-
-void f_interrupt(void){
-
-SST25ReadByte(0xf0);
-    
-}
