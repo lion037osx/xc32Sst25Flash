@@ -19,7 +19,9 @@
 #include "Compiler.h"
 #include "HardwareProfile.h"
 #ifdef __WRITE_LOGO__
-#include "logo480.h"
+#include "logo.h"
+    //#include "logo480.h"
+   // #include "domotics13_24bitsC32.h"
 #endif
 
 int32_t main(void)
@@ -48,7 +50,7 @@ SST25Init();
     //UART2PrintString("init Write\r\n");
 
     flagWrite=0;
-
+    DWORD iSearch=0;
 while(BUTTON_STAT==PUSH)flagWrite=1;
 #ifdef __WRITE_LOGO__
     if(flagWrite==1){
@@ -57,11 +59,38 @@ while(BUTTON_STAT==PUSH)flagWrite=1;
         UART2PrintString("end erase\r\n");
     }
 UART2PrintString("init Write\r\n");    
-    while(flagWrite&&sizeLogo--) 
+
+WORD draw;
+/*
+while(flagWrite&&sizeLogo--) 
     {
-        SST25WriteByte(logo[address],address);
+
+draw=(WORD)(((domotics[iSearch+1]<<8)&0xFF00) | (domotics[iSearch] & 0xFF));            
+    //draw=(WORD)(logo[iSearch]) | (logo[iSearch+1]<<8);
+        SST25WriteWord(draw,address);
+        iSearch=iSearch+2;
         address++;
     }
+
+*/
+
+
+
+ 
+ while(flagWrite&&sizeLogo--) 
+    {
+        //SST25WriteByte(domotics[address],address);
+     SST25WriteByte(logo[address],address);
+       address++;
+    }
+ 
+
+
+
+
+
+
+
 UART2PrintString("end Write\r\n");
 #endif
 
