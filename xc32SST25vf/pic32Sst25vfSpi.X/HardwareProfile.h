@@ -19,7 +19,12 @@ extern "C" {
     
 #define CANT_DATA_READ     32
 //#if defined(__WRITE_LOGO__    )    
-#define SIZE_LOGO ((480*272*2)+18)    //260087    
+#define HEADER_BMP    6
+#define WIDTH 480
+#define HEIGHT 272
+#define STRLEN_WORD 2    
+    
+#define SIZE_LOGO ((WIDTH*HEIGHT*STRLEN_WORD)+HEADER_BMP)    //260087    
 //#endif
 
 
