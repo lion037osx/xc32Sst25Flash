@@ -14,7 +14,6 @@
       <itemPath>timer.h</itemPath>
       <itemPath>uart2.h</itemPath>
       <itemPath>SST25VF016.h</itemPath>
-      <itemPath>logo.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

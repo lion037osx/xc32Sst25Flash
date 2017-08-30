@@ -19,7 +19,8 @@
 #include "Compiler.h"
 #include "HardwareProfile.h"
 #ifdef __WRITE_LOGO__
-#include "logo.h"
+//#include "logo.h"
+#include "logoIcon.h"
     //#include "logo480.h"
    // #include "domotics13_24bitsC32.h"
 #endif
@@ -75,7 +76,6 @@ draw=(WORD)(((domotics[iSearch+1]<<8)&0xFF00) | (domotics[iSearch] & 0xFF));
 */
 
 
-
  
  while(flagWrite&&sizeLogo--) 
     {
@@ -84,12 +84,6 @@ draw=(WORD)(((domotics[iSearch+1]<<8)&0xFF00) | (domotics[iSearch] & 0xFF));
        address++;
     }
  
-
-
-
-
-
-
 
 UART2PrintString("end Write\r\n");
 #endif
